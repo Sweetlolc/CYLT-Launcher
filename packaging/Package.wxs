@@ -1,0 +1,24 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+ <Package Name="CYLT Launcher（开发预览）" Manufacturer="Sweetlolc" Version="0.1.0" Language="2052" Codepage="936" UpgradeCode="5BBCA487-614E-4769-9BB6-15051B589A6D" Scope="perUser" InstallerVersion="500" Compressed="yes">
+  <SummaryInformation Description="CYLT Launcher 独立启动器 0.1.0 开发预览"/>
+  <MajorUpgrade DowngradeErrorMessage="已安装更新版本的 CYLT Launcher。"/>
+  <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
+  <Property Id="ARPCOMMENTS" Value="独立开发预览版；账号及游戏数据存放于 LocalAppData\CYLTLauncher，卸载保留这些数据。"/>
+  <Property Id="INSTALLFOLDER" Secure="yes"><RegistrySearch Id="SavedInstallFolder" Root="HKCU" Key="Software\CYLTLauncher\Installer" Name="InstallDir" Type="raw" Bitness="always64"/></Property>
+  <StandardDirectory Id="LocalAppDataFolder"><Directory Id="ProgramsFolder" Name="Programs"><Directory Id="INSTALLFOLDER" Name="CYLT Launcher">
+   <Component Id="Program" Guid="9245AE1A-19AA-4491-9102-F37BFCD780C3">
+    <File Id="LauncherExe" Source="$(var.Payload)\CYLT Launcher.exe"/>
+    <File Source="$(var.Payload)\LICENSE.txt"/>
+    <File Source="$(var.Payload)\THIRD-PARTY-NOTICES.txt"/>
+    <File Source="$(var.Payload)\使用说明.txt"/>
+    <RegistryValue Root="HKCU" Key="Software\CYLTLauncher\Installer" Name="InstallDir" Value="[INSTALLFOLDER]" Type="string" KeyPath="yes"/>
+    <RemoveFolder Id="RemoveProgramFolder" On="uninstall"/>
+   </Component>
+  </Directory></Directory></StandardDirectory>
+  <StandardDirectory Id="ProgramMenuFolder"><Directory Id="MenuFolder" Name="CYLT Launcher"><Component Id="MenuShortcut" Guid="00EC1463-6084-42B9-B0D4-D449B50FBF3C"><Shortcut Id="StartShortcut" Name="CYLT Launcher" Target="[#LauncherExe]" WorkingDirectory="INSTALLFOLDER"/><RegistryValue Root="HKCU" Key="Software\CYLTLauncher\Installer" Name="MenuShortcut" Value="1" Type="integer" KeyPath="yes"/><RemoveFolder Id="RemoveMenuFolder" On="uninstall"/></Component></Directory></StandardDirectory>
+  <StandardDirectory Id="DesktopFolder"><Component Id="DesktopShortcut" Guid="B35F87F8-CA83-4110-80B6-9B80C6D8C7A8"><Shortcut Id="DesktopLink" Name="CYLT Launcher" Target="[#LauncherExe]" WorkingDirectory="INSTALLFOLDER"/><RegistryValue Root="HKCU" Key="Software\CYLTLauncher\Installer" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes"/></Component></StandardDirectory>
+  <Feature Id="MainFeature" Title="CYLT Launcher" Level="1"><ComponentRef Id="Program"/><ComponentRef Id="MenuShortcut"/><ComponentRef Id="DesktopShortcut"/></Feature>
+  <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER"/>
+  <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseRtf)"/>
+ </Package>
+</Wix>

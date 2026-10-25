@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+.vs/
+.wix/
+artifacts/
+release/
+*.user
+*.log
+.env*
+!.env.example
+*.pfx
+*.key
+*.secrets
